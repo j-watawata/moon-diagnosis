@@ -1,542 +1,517 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-
-<html>
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.7">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Hiragino Sans'; -webkit-text-stroke: #000000}
-    span.s1 {font-kerning: none}
-    span.s2 {font: 12.0px 'Hiragino Sans'; font-kerning: none}
-    span.s3 {font: 12.0px 'Apple Color Emoji'; font-kerning: none}
-    span.s4 {font: 12.0px Helvetica; font-kerning: none}
-    span.s5 {font: 12.0px 'Lucida Grande'; font-kerning: none}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心の月相診断 | 紫月柔</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e8e8e8;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(200, 181, 216, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #c8b5d8;
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(200, 181, 216, 0.5);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a8d8ea;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        .moon-icon {
+            text-align: center;
+            font-size: 4em;
+            margin: 20px 0;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #d4d4d4;
+        }
+
+        .question-container {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #c8b5d8;
+            font-weight: bold;
+        }
+
+        .question-number {
+            color: #a8d8ea;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            background: rgba(200, 181, 216, 0.1);
+            border: 2px solid rgba(200, 181, 216, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            background: rgba(200, 181, 216, 0.2);
+            border-color: #c8b5d8;
+            transform: translateX(5px);
+        }
+
+        .start-btn, .result-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #c8b5d8 0%, #a8d8ea 100%);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .start-btn:hover, .result-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(200, 181, 216, 0.4);
+        }
+
+        .result-container {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .result-container.active {
+            display: block;
+        }
+
+        .result-moon {
+            font-size: 5em;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .result-title {
+            text-align: center;
+            font-size: 1.8em;
+            color: #c8b5d8;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .result-section {
+            background: rgba(200, 181, 216, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #c8b5d8;
+        }
+
+        .result-section h3 {
+            color: #a8d8ea;
+            margin-bottom: 10px;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .share-btn {
+            flex: 1;
+            padding: 12px;
+            background: rgba(168, 216, 234, 0.2);
+            border: 1px solid #a8d8ea;
+            border-radius: 8px;
+            color: #a8d8ea;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .share-btn:hover {
+            background: rgba(168, 216, 234, 0.3);
+        }
+
+        .fortune-link {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(200, 181, 216, 0.1);
+            border-radius: 10px;
+        }
+
+        .fortune-link a {
+            color: #c8b5d8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .fortune-link a:hover {
+            color: #a8d8ea;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(200, 181, 216, 0.2);
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c8b5d8, #a8d8ea);
+            width: 0%;
+            transition: width 0.3s;
+        }
+    </style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="ja"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;</span><span class="s2">心の月相診断</span><span class="s1"> | </span><span class="s2">紫月柔</span><span class="s1">&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>* {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #e8e8e8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>min-height: 100vh;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>line-height: 1.8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.container {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>max-width: 600px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 0 auto;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.05);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(10px);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 40px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(200, 181, 216, 0.2);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>h1 {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #c8b5d8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 2em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-shadow: 0 0 10px rgba(200, 181, 216, 0.5);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.subtitle {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #a8d8ea;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 0.9em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>opacity: 0.8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.moon-icon {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 4em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 20px 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.intro {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #d4d4d4;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.question-container {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>animation: fadeIn 0.5s;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.question-container.active {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: block;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>@keyframes fadeIn {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>from { opacity: 0; transform: translateY(10px); }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>to { opacity: 1; transform: translateY(0); }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.question {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.2em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #c8b5d8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.question-number {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #a8d8ea;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 0.9em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.options {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex-direction: column;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gap: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.option {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(200, 181, 216, 0.1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 2px solid rgba(200, 181, 216, 0.3);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: all 0.3s;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.option:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(200, 181, 216, 0.2);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-color: #c8b5d8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: translateX(5px);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.start-btn, .result-btn {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #c8b5d8 0%, #a8d8ea 100%);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #1a1a2e;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.1em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: all 0.3s;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.start-btn:hover, .result-btn:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: scale(1.05);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 5px 20px rgba(200, 181, 216, 0.4);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.result-container {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>animation: fadeIn 0.5s;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.result-container.active {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: block;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.result-moon {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 5em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 20px 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.result-title {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.8em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #c8b5d8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.result-section {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(200, 181, 216, 0.1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-left: 4px solid #c8b5d8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.result-section h3 {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #a8d8ea;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.share-buttons {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gap: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.share-btn {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex: 1;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 12px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(168, 216, 234, 0.2);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 1px solid #a8d8ea;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #a8d8ea;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: all 0.3s;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.share-btn:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(168, 216, 234, 0.3);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.fortune-link {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(200, 181, 216, 0.1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.fortune-link a {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #c8b5d8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-decoration: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.fortune-link a:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #a8d8ea;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.progress-bar {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(200, 181, 216, 0.2);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 4px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>overflow: hidden;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.progress-fill {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: linear-gradient(90deg, #c8b5d8, #a8d8ea);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 0%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: width 0.3s;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="container"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="start-screen"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="moon-icon"&gt;</span><span class="s3">🌙</span><span class="s1">&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h1&gt;</span><span class="s2">心の月相診断</span><span class="s1">&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p class="subtitle"&gt;</span><span class="s2">紫月</span><span class="s1"> </span><span class="s2">柔（しづき</span><span class="s1"> </span><span class="s2">やわら）</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="intro"&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>&lt;p&gt;</span><span class="s1">月が満ち欠けを繰り返すように、</span><span class="s4">&lt;br&gt;</span><span class="s1">人の心にも「相（フェーズ）」があります。</span><span class="s4">&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p style="margin-top: 15px;"&gt;12</span><span class="s2">の質問に答えて、</span><span class="s1">&lt;br&gt;</span><span class="s2">今のあなたの「心の月相」を診断しましょう。</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button class="start-btn" onclick="startDiagnosis()"&gt;</span><span class="s2">診断を始める</span><span class="s1">&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="question-screen" style="display: none;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="progress-bar"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="progress-fill" id="progress"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="questions"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="result-screen" class="result-container"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="result-moon" id="result-moon"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="result-title" id="result-title"&gt;&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="result-section"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h3&gt;</span><span class="s3">🌙</span><span class="s1"> </span><span class="s2">現在の心の状態</span><span class="s1">&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p id="result-description"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="result-section"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h3&gt;</span><span class="s3">✨</span><span class="s1"> </span><span class="s2">次のフェーズへのステップ</span><span class="s1">&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p id="result-advice"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="result-section"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h3&gt;</span><span class="s3">💫</span><span class="s1"> </span><span class="s2">あなたへのメッセージ</span><span class="s1">&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p id="result-message"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="result-section"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h3&gt;</span><span class="s3">🌸</span><span class="s1"> </span><span class="s2">おすすめのセルフケア</span><span class="s1">&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p id="result-selfcare"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="share-buttons"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;button class="share-btn" onclick="shareToTwitter()"&gt;</span><span class="s3">🐦</span><span class="s1"> </span><span class="s2">結果をシェア</span><span class="s1">&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;button class="share-btn" onclick="retryDiagnosis()"&gt;</span><span class="s3">🔄</span><span class="s1"> </span><span class="s2">もう一度診断</span><span class="s1">&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="fortune-link"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p style="margin-bottom: 10px;"&gt;</span><span class="s2">もっと深く知りたい方へ</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;a href="#" target="_blank"&gt;</span><span class="s5">→</span><span class="s1"> </span><span class="s2">紫月柔の個別鑑定はこちら</span><span class="s1">&lt;/a&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const questions = [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>q: "</span><span class="s2">最近、自分に価値があると感じられますか？</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>options: [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">全く感じられない</span><span class="s1">", score: { new: 3 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">あまり感じられない</span><span class="s1">", score: { crescent: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">少しは感じられる</span><span class="s1">", score: { quarter: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">十分に感じられる</span><span class="s1">", score: { full: 3 } }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>q: "</span><span class="s2">人を信じることができますか？</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>options: [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">誰も信じられない</span><span class="s1">", score: { new: 3 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">信じたいけど怖い</span><span class="s1">", score: { crescent: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">少しずつ信じられる</span><span class="s1">", score: { quarter: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">信頼できる人がいる</span><span class="s1">", score: { full: 3 } }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>q: "</span><span class="s2">未来について考えるとき、どう感じますか？</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>options: [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">不安しかない</span><span class="s1">", score: { new: 3 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">不安が大きいけど希望もある</span><span class="s1">", score: { crescent: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">前向きに考えられる</span><span class="s1">", score: { quarter: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">明るい未来を描ける</span><span class="s1">", score: { full: 3 } }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>q: "</span><span class="s2">「私が悪い」と自分を責めることは？</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>options: [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">いつもそう思ってしまう</span><span class="s1">", score: { new: 3 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">よくそう思う</span><span class="s1">", score: { crescent: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">たまにそう思う</span><span class="s1">", score: { quarter: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">ほとんどそう思わない</span><span class="s1">", score: { full: 3 } }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>q: "</span><span class="s2">親との関係について</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>options: [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">今も深く苦しんでいる</span><span class="s1">", score: { new: 3 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">影響から抜け出そうとしている</span><span class="s1">", score: { crescent: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">距離を取れるようになった</span><span class="s1">", score: { quarter: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">折り合いがついた</span><span class="s1">", score: { full: 3 } }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>q: "</span><span class="s2">小さな幸せを感じられますか？</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>options: [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">何も楽しめない</span><span class="s1">", score: { new: 3 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">たまに感じる瞬間がある</span><span class="s1">", score: { crescent: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">日常の中で見つけられる</span><span class="s1">", score: { quarter: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">よく感じられる</span><span class="s1">", score: { full: 3 } }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>q: "</span><span class="s2">自分の気持ちを言葉にできますか？</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>options: [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">全くできない</span><span class="s1">", score: { new: 3 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">苦手だけど努力している</span><span class="s1">", score: { crescent: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">ある程度できる</span><span class="s1">", score: { quarter: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">自然にできる</span><span class="s1">", score: { full: 3 } }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>q: "</span><span class="s2">変わりたいという気持ちはありますか？</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>options: [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">変わりたいけど無理だと思う</span><span class="s1">", score: { new: 2, crescent: 1 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">変わりたいと強く思う</span><span class="s1">", score: { crescent: 3 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">少しずつ変わっている実感がある</span><span class="s1">", score: { quarter: 3 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">すでに変わってきた</span><span class="s1">", score: { full: 3 } }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>q: "</span><span class="s2">他人の幸せを素直に喜べますか？</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>options: [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">辛くなってしまう</span><span class="s1">", score: { new: 3 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">複雑な気持ちになる</span><span class="s1">", score: { crescent: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">だいたい喜べる</span><span class="s1">", score: { quarter: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">心から喜べる</span><span class="s1">", score: { full: 3 } }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>q: "</span><span class="s2">過去の傷について</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>options: [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">まだ血を流している</span><span class="s1">", score: { new: 3 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">向き合い始めている</span><span class="s1">", score: { crescent: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">受け入れつつある</span><span class="s1">", score: { quarter: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">強さに変わった</span><span class="s1">", score: { full: 3 } }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>q: "</span><span class="s2">今の生活に希望を感じますか？</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>options: [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">全く感じない</span><span class="s1">", score: { new: 3 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">かすかに感じる</span><span class="s1">", score: { crescent: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">半分くらい感じる</span><span class="s1">", score: { quarter: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">しっかり感じる</span><span class="s1">", score: { full: 3 } }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>q: "</span><span class="s2">同じ痛みを持つ人を助けたいと思いますか？</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>options: [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">自分のことで精一杯</span><span class="s1">", score: { new: 3 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">いつかそうしたい</span><span class="s1">", score: { crescent: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">できる範囲で助けたい</span><span class="s1">", score: { quarter: 2 } },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">積極的に助けたい</span><span class="s1">", score: { full: 3 } }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>];</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const results = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>new: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>moon: "</span><span class="s3">🌑</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>title: "</span><span class="s2">新月フェーズ</span><span class="s1">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>description: "</span><span class="s1">今、あなたは闇の中にいるように感じているかもしれません。自己肯定感が失われ、「私が悪い」という思い込みに苦しんでいる状態です。でも、新月は決して悪いものではありません。これは、次の光への準備期間。種が土の中で芽吹く準備をしているように、あなたの心も静かに力を蓄えています。</span><span class="s4">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>advice: "</span><span class="s1">まずは、「今の自分を責めない」ことから始めましょう。あなたは悪くない。環境が、そうさせただけです。信頼できる人に話を聞いてもらう、カウンセリングや占いで心を整理する、小さな自己肯定の練習をする。一歩ずつ、光に向かって歩き出しましょう。</span><span class="s4">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>message: "</span><span class="s1">あなたは一人じゃありません。同じ痛みを知る人がそばにいます。月が必ず満ちるように、あなたの心も必ず輝きを取り戻します。焦らず、ゆっくりでいい。今日を生き延びたあなたは、もう十分に強いのです。</span><span class="s4">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>selfcare: "</span><span class="s1">静かな場所で深呼吸する、温かいお茶を飲む、柔らかい毛布に包まる、優しい音楽を聴く。自分を労わる時間を作ってください。</span><span class="s4">"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>crescent: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>moon: "</span><span class="s3">🌒</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>title: "</span><span class="s2">三日月フェーズ</span><span class="s1">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>description: "</span><span class="s1">かすかな光が見え始めましたね。「変わりたい」という気持ちが芽生え、過去の傷と向き合い始めています。まだ不安定で、揺れることも多いでしょう。でも、その揺れは前に進んでいる証拠です。闇の中から、少しずつ顔を出す月のように、あなたの心も確実に光を取り戻しつつあります。</span><span class="s4">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>advice: "</span><span class="s1">今は無理をしない時期。小さな成功体験を積み重ねましょう。「今日は朝ちゃんと起きられた」「誰かに優しくできた」そんな小さなことでいい。自分を認める練習を続けてください。また、信頼できる人や専門家のサポートを受けながら、ゆっくり歩みを進めましょう。</span><span class="s4">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>message: "</span><span class="s1">あなたは変わり始めています。それは、とても勇気のいることです。時々、闇に引き戻されそうになっても大丈夫。それも含めて、成長のプロセスです。あなたのペースで、あなたの光を取り戻していってください。</span><span class="s4">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>selfcare: "</span><span class="s1">朝日を浴びる、好きなことを少しだけやる、小さな目標を立てて達成する、成長日記をつける。前進を実感できることを。</span><span class="s4">"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>quarter: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>moon: "</span><span class="s3">🌓</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>title: "</span><span class="s2">上弦の月フェーズ</span><span class="s1">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>description: "</span><span class="s1">半分の光を取り戻しましたね。過去を受け入れられるようになり、他者との健全な関係を築き始めています。「私は悪くなかった」と心から思える瞬間が増えてきました。時々揺り戻しがあっても、それは自然なこと。月も満ち欠けを繰り返します。あなたは確実に回復の道を歩んでいます。</span><span class="s4">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>advice: "</span><span class="s1">この段階では、自分の気持ちや境界線を大切にする練習を。</span><span class="s4">NO</span><span class="s1">と言っていい。自分を優先していい。また、新しい人間関係や趣味、挑戦を少しずつ取り入れていきましょう。過去の自分とは違う、新しいあなたを育てる時期です。</span><span class="s4">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>message: "</span><span class="s1">あなたは素晴らしい成長を遂げました。まだ完璧じゃなくていい。揺れながら進めばいい。あなたの中には、確かな強さと優しさがあります。それを信じて、これからも歩み続けてください。</span><span class="s4">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>selfcare: "</span><span class="s1">新しい趣味に挑戦する、自分にご褒美をあげる、感謝日記をつける、健康的な人間関係を育む。自分を大切にすることを。</span><span class="s4">"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>full: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>moon: "</span><span class="s3">🌕</span><span class="s1">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>title: "</span><span class="s2">満月フェーズ</span><span class="s1">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>description: "</span><span class="s1">おめでとうございます。あなたは本来の輝きを取り戻しました。自己肯定感が育ち、愛し愛される関係を築けるようになりました。過去の傷は「強さ」に変わり、同じ痛みを持つ人を助けたいという想いも芽生えています。あなたは美しく、強く、輝いています。</span><span class="s4">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>advice: "</span><span class="s1">この光を保ちながら、さらに深めていきましょう。自分の経験を誰かのために活かす、新しい目標に挑戦する、感謝の気持ちを伝える。そして、時々欠けることがあっても、自分を責めないでください。それも自然なサイクルです。</span><span class="s4">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>message: "</span><span class="s1">あなたは、本当によく頑張ってこられました。その強さと優しさは、誰かの希望になります。あなたの存在そのものが、光です。これからも、あなたらしく輝き続けてください。</span><span class="s4">",</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span>selfcare: "</span><span class="s1">感謝の気持ちを伝える、誰かを助ける、自分の成長を振り返る、新しいチャレンジをする。光を分かち合うことを。</span><span class="s4">"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let currentQuestion = 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let scores = { new: 0, crescent: 0, quarter: 0, full: 0 };</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function startDiagnosis() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('start-screen').style.display = 'none';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('question-screen').style.display = 'block';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>showQuestion();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function showQuestion() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const questionContainer = document.getElementById('questions');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const question = questions[currentQuestion];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>questionContainer.innerHTML = `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="question-container active"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="question-number"&gt;</span><span class="s2">質問</span><span class="s1"> ${currentQuestion + 1} / ${questions.length}&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="question"&gt;${question.q}&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="options"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>${question.options.map((option, index) =&gt; `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div class="option" onclick="selectOption(${index})"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>${option.text}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>`).join('')}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>`;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>updateProgress();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function updateProgress() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const progress = ((currentQuestion) / questions.length) * 100;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('progress').style.width = progress + '%';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function selectOption(optionIndex) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const selectedOption = questions[currentQuestion].options[optionIndex];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// </span><span class="s2">スコア加算</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>for (let phase in selectedOption.score) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>scores[phase] += selectedOption.score[phase];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>currentQuestion++;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (currentQuestion &lt; questions.length) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>showQuestion();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>showResult();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function showResult() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// </span><span class="s2">最もスコアの高い月相を判定</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let maxScore = 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let resultPhase = 'new';</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>for (let phase in scores) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (scores[phase] &gt; maxScore) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>maxScore = scores[phase];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>resultPhase = phase;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const result = results[resultPhase];</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('question-screen').style.display = 'none';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('result-screen').classList.add('active');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('result-moon').textContent = result.moon;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('result-title').textContent = result.title;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('result-description').textContent = result.description;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('result-advice').textContent = result.advice;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('result-message').textContent = result.message;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('result-selfcare').textContent = result.selfcare;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function shareToTwitter() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const resultTitle = document.getElementById('result-title').textContent;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const text = `</span><span class="s2">私の心の月相は「</span><span class="s1">${resultTitle}</span><span class="s2">」でした！</span><span class="s3">🌙</span><span class="s1">\n\n#</span><span class="s2">心の月相診断</span><span class="s1"> #</span><span class="s2">紫月柔</span><span class="s1">`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const url = window.location.href;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&amp;url=${encodeURIComponent(url)}`, '_blank');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function retryDiagnosis() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>currentQuestion = 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>scores = { new: 0, crescent: 0, quarter: 0, full: 0 };</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('result-screen').classList.remove('active');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('start-screen').style.display = 'block';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+    <div class="container">
+        <div id="start-screen">
+            <div class="moon-icon">🌙</div>
+            <h1>心の月相診断</h1>
+            <p class="subtitle">紫月 柔（しづき やわら）</p>
+            
+            <div class="intro">
+                <p>月が満ち欠けを繰り返すように、<br>人の心にも「相（フェーズ）」があります。</p>
+                <p style="margin-top: 15px;">12の質問に答えて、<br>今のあなたの「心の月相」を診断しましょう。</p>
+            </div>
+            
+            <button class="start-btn" onclick="startDiagnosis()">診断を始める</button>
+        </div>
+
+        <div id="question-screen" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            
+            <div id="questions"></div>
+        </div>
+
+        <div id="result-screen" class="result-container">
+            <div class="result-moon" id="result-moon"></div>
+            <div class="result-title" id="result-title"></div>
+            
+            <div class="result-section">
+                <h3>🌙 現在の心の状態</h3>
+                <p id="result-description"></p>
+            </div>
+            
+            <div class="result-section">
+                <h3>✨ 次のフェーズへのステップ</h3>
+                <p id="result-advice"></p>
+            </div>
+            
+            <div class="result-section">
+                <h3>💫 あなたへのメッセージ</h3>
+                <p id="result-message"></p>
+            </div>
+            
+            <div class="result-section">
+                <h3>🌸 おすすめのセルフケア</h3>
+                <p id="result-selfcare"></p>
+            </div>
+
+            <div class="share-buttons">
+                <button class="share-btn" onclick="shareToTwitter()">🐦 結果をシェア</button>
+                <button class="share-btn" onclick="retryDiagnosis()">🔄 もう一度診断</button>
+            </div>
+
+            <div class="fortune-link">
+                <p style="margin-bottom: 10px;">もっと深く知りたい方へ</p>
+                <a href="#" target="_blank">→ 紫月柔の個別鑑定はこちら</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "最近、自分に価値があると感じられますか？",
+                options: [
+                    { text: "全く感じられない", score: { new: 3 } },
+                    { text: "あまり感じられない", score: { crescent: 2 } },
+                    { text: "少しは感じられる", score: { quarter: 2 } },
+                    { text: "十分に感じられる", score: { full: 3 } }
+                ]
+            },
+            {
+                q: "人を信じることができますか？",
+                options: [
+                    { text: "誰も信じられない", score: { new: 3 } },
+                    { text: "信じたいけど怖い", score: { crescent: 2 } },
+                    { text: "少しずつ信じられる", score: { quarter: 2 } },
+                    { text: "信頼できる人がいる", score: { full: 3 } }
+                ]
+            },
+            {
+                q: "未来について考えるとき、どう感じますか？",
+                options: [
+                    { text: "不安しかない", score: { new: 3 } },
+                    { text: "不安が大きいけど希望もある", score: { crescent: 2 } },
+                    { text: "前向きに考えられる", score: { quarter: 2 } },
+                    { text: "明るい未来を描ける", score: { full: 3 } }
+                ]
+            },
+            {
+                q: "「私が悪い」と自分を責めることは？",
+                options: [
+                    { text: "いつもそう思ってしまう", score: { new: 3 } },
+                    { text: "よくそう思う", score: { crescent: 2 } },
+                    { text: "たまにそう思う", score: { quarter: 2 } },
+                    { text: "ほとんどそう思わない", score: { full: 3 } }
+                ]
+            },
+            {
+                q: "親との関係について",
+                options: [
+                    { text: "今も深く苦しんでいる", score: { new: 3 } },
+                    { text: "影響から抜け出そうとしている", score: { crescent: 2 } },
+                    { text: "距離を取れるようになった", score: { quarter: 2 } },
+                    { text: "折り合いがついた", score: { full: 3 } }
+                ]
+            },
+            {
+                q: "小さな幸せを感じられますか？",
+                options: [
+                    { text: "何も楽しめない", score: { new: 3 } },
+                    { text: "たまに感じる瞬間がある", score: { crescent: 2 } },
+                    { text: "日常の中で見つけられる", score: { quarter: 2 } },
+                    { text: "よく感じられる", score: { full: 3 } }
+                ]
+            },
+            {
+                q: "自分の気持ちを言葉にできますか？",
+                options: [
+                    { text: "全くできない", score: { new: 3 } },
+                    { text: "苦手だけど努力している", score: { crescent: 2 } },
+                    { text: "ある程度できる", score: { quarter: 2 } },
+                    { text: "自然にできる", score: { full: 3 } }
+                ]
+            },
+            {
+                q: "変わりたいという気持ちはありますか？",
+                options: [
+                    { text: "変わりたいけど無理だと思う", score: { new: 2, crescent: 1 } },
+                    { text: "変わりたいと強く思う", score: { crescent: 3 } },
+                    { text: "少しずつ変わっている実感がある", score: { quarter: 3 } },
+                    { text: "すでに変わってきた", score: { full: 3 } }
+                ]
+            },
+            {
+                q: "他人の幸せを素直に喜べますか？",
+                options: [
+                    { text: "辛くなってしまう", score: { new: 3 } },
+                    { text: "複雑な気持ちになる", score: { crescent: 2 } },
+                    { text: "だいたい喜べる", score: { quarter: 2 } },
+                    { text: "心から喜べる", score: { full: 3 } }
+                ]
+            },
+            {
+                q: "過去の傷について",
+                options: [
+                    { text: "まだ血を流している", score: { new: 3 } },
+                    { text: "向き合い始めている", score: { crescent: 2 } },
+                    { text: "受け入れつつある", score: { quarter: 2 } },
+                    { text: "強さに変わった", score: { full: 3 } }
+                ]
+            },
+            {
+                q: "今の生活に希望を感じますか？",
+                options: [
+                    { text: "全く感じない", score: { new: 3 } },
+                    { text: "かすかに感じる", score: { crescent: 2 } },
+                    { text: "半分くらい感じる", score: { quarter: 2 } },
+                    { text: "しっかり感じる", score: { full: 3 } }
+                ]
+            },
+            {
+                q: "同じ痛みを持つ人を助けたいと思いますか？",
+                options: [
+                    { text: "自分のことで精一杯", score: { new: 3 } },
+                    { text: "いつかそうしたい", score: { crescent: 2 } },
+                    { text: "できる範囲で助けたい", score: { quarter: 2 } },
+                    { text: "積極的に助けたい", score: { full: 3 } }
+                ]
+            }
+        ];
+
+        const results = {
+            new: {
+                moon: "🌑",
+                title: "新月フェーズ",
+                description: "今、あなたは闇の中にいるように感じているかもしれません。自己肯定感が失われ、「私が悪い」という思い込みに苦しんでいる状態です。でも、新月は決して悪いものではありません。これは、次の光への準備期間。種が土の中で芽吹く準備をしているように、あなたの心も静かに力を蓄えています。",
+                advice: "まずは、「今の自分を責めない」ことから始めましょう。あなたは悪くない。環境が、そうさせただけです。信頼できる人に話を聞いてもらう、カウンセリングや占いで心を整理する、小さな自己肯定の練習をする。一歩ずつ、光に向かって歩き出しましょう。",
+                message: "あなたは一人じゃありません。同じ痛みを知る人がそばにいます。月が必ず満ちるように、あなたの心も必ず輝きを取り戻します。焦らず、ゆっくりでいい。今日を生き延びたあなたは、もう十分に強いのです。",
+                selfcare: "静かな場所で深呼吸する、温かいお茶を飲む、柔らかい毛布に包まる、優しい音楽を聴く。自分を労わる時間を作ってください。"
+            },
+            crescent: {
+                moon: "🌒",
+                title: "三日月フェーズ",
+                description: "かすかな光が見え始めましたね。「変わりたい」という気持ちが芽生え、過去の傷と向き合い始めています。まだ不安定で、揺れることも多いでしょう。でも、その揺れは前に進んでいる証拠です。闇の中から、少しずつ顔を出す月のように、あなたの心も確実に光を取り戻しつつあります。",
+                advice: "今は無理をしない時期。小さな成功体験を積み重ねましょう。「今日は朝ちゃんと起きられた」「誰かに優しくできた」そんな小さなことでいい。自分を認める練習を続けてください。また、信頼できる人や専門家のサポートを受けながら、ゆっくり歩みを進めましょう。",
+                message: "あなたは変わり始めています。それは、とても勇気のいることです。時々、闇に引き戻されそうになっても大丈夫。それも含めて、成長のプロセスです。あなたのペースで、あなたの光を取り戻していってください。",
+                selfcare: "朝日を浴びる、好きなことを少しだけやる、小さな目標を立てて達成する、成長日記をつける。前進を実感できることを。"
+            },
+            quarter: {
+                moon: "🌓",
+                title: "上弦の月フェーズ",
+                description: "半分の光を取り戻しましたね。過去を受け入れられるようになり、他者との健全な関係を築き始めています。「私は悪くなかった」と心から思える瞬間が増えてきました。時々揺り戻しがあっても、それは自然なこと。月も満ち欠けを繰り返します。あなたは確実に回復の道を歩んでいます。",
+                advice: "この段階では、自分の気持ちや境界線を大切にする練習を。NOと言っていい。自分を優先していい。また、新しい人間関係や趣味、挑戦を少しずつ取り入れていきましょう。過去の自分とは違う、新しいあなたを育てる時期です。",
+                message: "あなたは素晴らしい成長を遂げました。まだ完璧じゃなくていい。揺れながら進めばいい。あなたの中には、確かな強さと優しさがあります。それを信じて、これからも歩み続けてください。",
+                selfcare: "新しい趣味に挑戦する、自分にご褒美をあげる、感謝日記をつける、健康的な人間関係を育む。自分を大切にすることを。"
+            },
+            full: {
+                moon: "🌕",
+                title: "満月フェーズ",
+                description: "おめでとうございます。あなたは本来の輝きを取り戻しました。自己肯定感が育ち、愛し愛される関係を築けるようになりました。過去の傷は「強さ」に変わり、同じ痛みを持つ人を助けたいという想いも芽生えています。あなたは美しく、強く、輝いています。",
+                advice: "この光を保ちながら、さらに深めていきましょう。自分の経験を誰かのために活かす、新しい目標に挑戦する、感謝の気持ちを伝える。そして、時々欠けることがあっても、自分を責めないでください。それも自然なサイクルです。",
+                message: "あなたは、本当によく頑張ってこられました。その強さと優しさは、誰かの希望になります。あなたの存在そのものが、光です。これからも、あなたらしく輝き続けてください。",
+                selfcare: "感謝の気持ちを伝える、誰かを助ける、自分の成長を振り返る、新しいチャレンジをする。光を分かち合うことを。"
+            }
+        };
+
+        let currentQuestion = 0;
+        let scores = { new: 0, crescent: 0, quarter: 0, full: 0 };
+
+        function startDiagnosis() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('question-screen').style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const questionContainer = document.getElementById('questions');
+            const question = questions[currentQuestion];
+            
+            questionContainer.innerHTML = `
+                <div class="question-container active">
+                    <div class="question-number">質問 ${currentQuestion + 1} / ${questions.length}</div>
+                    <div class="question">${question.q}</div>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" onclick="selectOption(${index})">
+                                ${option.text}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion) / questions.length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function selectOption(optionIndex) {
+            const selectedOption = questions[currentQuestion].options[optionIndex];
+            
+            for (let phase in selectedOption.score) {
+                scores[phase] += selectedOption.score[phase];
+            }
+
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            let maxScore = 0;
+            let resultPhase = 'new';
+            
+            for (let phase in scores) {
+                if (scores[phase] > maxScore) {
+                    maxScore = scores[phase];
+                    resultPhase = phase;
+                }
+            }
+
+            const result = results[resultPhase];
+
+            document.getElementById('question-screen').style.display = 'none';
+            document.getElementById('result-screen').classList.add('active');
+
+            document.getElementById('result-moon').textContent = result.moon;
+            document.getElementById('result-title').textContent = result.title;
+            document.getElementById('result-description').textContent = result.description;
+            document.getElementById('result-advice').textContent = result.advice;
+            document.getElementById('result-message').textContent = result.message;
+            document.getElementById('result-selfcare').textContent = result.selfcare;
+        }
+
+        function shareToTwitter() {
+            const resultTitle = document.getElementById('result-title').textContent;
+            const text = `私の心の月相は「${resultTitle}」でした！🌙\n\n#心の月相診断 #紫月柔`;
+            const url = window.location.href;
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        function retryDiagnosis() {
+            currentQuestion = 0;
+            scores = { new: 0, crescent: 0, quarter: 0, full: 0 };
+            document.getElementById('result-screen').classList.remove('active');
+            document.getElementById('start-screen').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
